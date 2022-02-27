@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 
-const EmployeeSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
+  
+  username: {
+    type: String,
+    required: [true, 'Please enter a username'],
+    unique: [true, "Duplicate Username Not allowed"],
+    trim: true,
+    uppercase: true,
+    minlength: 10,
+    maxlength: 50,
+  },
   firstname: {
     type: String,
     required: [true, 'Please enter first name'],
@@ -14,6 +24,11 @@ const EmployeeSchema = new mongoose.Schema({
     trim: true,
     lowercase: true
   },
+
+  password:{
+    type: String,
+    required: [true, 'Please enter password']},
+
   email: {
     type: String,
     required: true,
@@ -29,36 +44,13 @@ const EmployeeSchema = new mongoose.Schema({
       return emailRegex.test(value);
     }
   },
-  gender: {
+  type:{
     type: String,
     required: true,
-    enum: ['male', 'female', 'other'],
+    enum : ['user','admin'],
     trim: true,
     lowercase: true
-  },
-  city:{
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true
-  },
-  designation: {
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true
-  },
-  salary: {
-    type: Number,
-    default: 0.0,
-    //min: [1000, 'Too less Salary'],
-    //max: 12000,
-    validate(value) {
-      if (value < 0.0){
-         throw new Error("Negative Salary aren't real.");
-      }
-    }
-  },
+},
   created: { 
     type: Date,
     default: Date.now,
@@ -70,5 +62,5 @@ const EmployeeSchema = new mongoose.Schema({
   },
 });
 
-const Employee = mongoose.model("Employee", EmployeeSchema);
-module.exports = Employee;
+const User = mongoose.model("User", UserSchema);
+module.exports = User;
